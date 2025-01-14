@@ -8,7 +8,6 @@ import time
 import threading
 import struct
 from datetime import datetime 
-from pymodbus.client import ModbusTcpClient
 import openpyxl
 import os
 from openpyxl.utils.cell import coordinate_from_string, column_index_from_string
@@ -401,10 +400,10 @@ class Server:
                             if not value_cell_coordinates:
                                 raise Exception(f"잘못된 셀 위치 형식입니다: {value_cell_position}")
                             
+                            row = value_cell_coordinates[0] + int(check_num) - 1
+                            
                             if date_index > 2:
-                                row = value_cell_coordinates[0] + tmp_list[5]
-                            else:
-                                row = value_cell_coordinates[0]
+                                row += tmp_list[5]
 
                             col = (value_cell_coordinates[1] + 2 * data_index if data_index != len(data['measurements'][check_num]) - 1
                                 else value_cell_coordinates[1] + 2 * 3)
@@ -418,8 +417,6 @@ class Server:
                             data_index +=1
                         data_index = 0
                     date_index += 1
-                    print(date_index)
-                    
 
                 date_index = 0
 
